@@ -6,6 +6,8 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "pandas>=3.0.5",
+    "psycopg2-binary>=2.9.12",
+    "sqlalchemy>=2.0.51",
 ]
 
 [dependency-groups]
