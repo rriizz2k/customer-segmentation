@@ -8,7 +8,7 @@ def load_data():
     tables = ["account", "card", "client", "disp", "district", "loan", "order", "trans"]
 
     for name in tables:
-        df = pd.read_csv(f"data/{name}.csv")
+        df = pd.read_csv(f"data/{name}.csv", sep=";")
         df.to_sql(name, engine, if_exists="replace", index=False)
         print(f"таблица {name} готова")
 
