@@ -51,4 +51,10 @@ X_scaled = StandardScaler().fit_transform(X)
 kmeans = KMeans(n_clusters=4, random_state=42)
 rfm['cluster'] = kmeans.fit_predict(X_scaled)
 
-print(rfm['cluster'].value_counts())
+inertias = []
+for k in range(1, 10):
+    km = KMeans(n_clusters=k, random_state=42)
+    km.fit(X_scaled)
+    inertias.append(km.inertia_)
+
+print(inertias)
