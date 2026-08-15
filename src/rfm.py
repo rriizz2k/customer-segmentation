@@ -11,10 +11,9 @@ WHERE t.k_symbol NOT LIKE '%%UROK%%' OR t.k_symbol IS NULL
 """
 
 df = pd.read_sql(query, engine)
+
 frequency = df.groupby('client_id').size()
 monetary = df.groupby('client_id')['amount'].sum()
-
-
 
 query = """
 SELECT c.client_id,
@@ -34,8 +33,6 @@ df = pd.read_sql(query, engine)
 
 recency = df
 
-
-
 rfm = pd.DataFrame({
     'frequency': frequency,
     'monetary': monetary,
@@ -43,6 +40,15 @@ rfm = pd.DataFrame({
 
 rfm = pd.merge(rfm, recency, how='inner', left_on=['client_id'], right_on=['client_id'])
 
-
-
 rfm.to_csv('data/rfm_features.csv', index=False)
+
+from sklearn.preprocessing import StandardScaler
+from sklearn.cluster import KMeans
+
+X = rfm[['recency', 'frequency', 'monetary']]
+X_scaled = StandardScaler().fit_transform(X)
+
+kmeans = KMeans(n_clusters=4, random_state=42)
+rfm['cluster'] = kmeans.fit_predict(X_scaled)
+
+print(rfm['cluster'].value_counts())
