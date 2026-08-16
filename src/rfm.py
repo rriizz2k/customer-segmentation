@@ -57,4 +57,4 @@ for k in range(1, 10):
     km.fit(X_scaled)
     inertias.append(km.inertia_)
 
-print(inertias)
+print(rfm.groupby('cluster')[['recency', 'frequency', 'monetary']].mean())
